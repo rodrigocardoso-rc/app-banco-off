@@ -21,7 +21,7 @@ export default function Avatar({ source, imageSize, styles, onPress }: AvatarPro
         <TouchableOpacity onPress={onPress}>
             <Image
                 source={{ uri: (source || 'https://picsum.photos/200') }}
-                resizeMode="stretch"
+                resizeMode="cover"
                 style={[imageDimension, stylesDefault.container, styles]} />
         </TouchableOpacity>
     )

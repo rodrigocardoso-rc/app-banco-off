@@ -46,7 +46,7 @@ export default function Chat() {
     }
 
     function onPressSend() {
-        if (!loggedUser) return
+        if (!loggedUser || !inputValue) return
 
         const userLog = {
             idUsuario: loggedUser.idUsuario,
