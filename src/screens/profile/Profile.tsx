@@ -53,7 +53,6 @@ export default function Profile() {
                 navigation.navigate(NameScreens.Home)
 
             })
-            .catch(err => console.log('Err', err))
             .finally(() => setIsLoading(false))
     }
 
@@ -75,7 +74,6 @@ export default function Profile() {
                 await onUpdateUser()
                 navigation.navigate(NameScreens.Home)
             })
-            .catch(err => console.log('Err', err))
             .finally(() => setIsLoading(false))
     }
 

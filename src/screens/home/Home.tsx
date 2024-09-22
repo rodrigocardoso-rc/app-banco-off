@@ -24,7 +24,6 @@ export default function Home() {
     function getChatList() {
         ConversaController.getChatList()
             .then((res) => setChatList([...res]))
-            .catch((err) => console.log(err))
     }
 
     function onPressProfile() {
@@ -47,8 +46,6 @@ export default function Home() {
                 onPress={() => onPressChat(item)} />
         )
     }
-
-    console.log(loggedUser?.imagemUsuario)
 
     return (
         <View style={styles.container}>

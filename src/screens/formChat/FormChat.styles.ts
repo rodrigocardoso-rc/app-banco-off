@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { Dimensions } from "../../styles/Dimensions";
+import { Colors } from "../../styles/Colors";
 
 export default StyleSheet.create({
     contentScroll: {
@@ -17,5 +18,14 @@ export default StyleSheet.create({
     },
     buttonContainer: {
         marginVertical: Dimensions.margin.large
+    },
+    deleteChatContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: Dimensions.margin.medium
+    },
+    deleteChatText: {
+        fontSize: Dimensions.fontSize.medium,
+        color: Colors.placeholder
     }
 });

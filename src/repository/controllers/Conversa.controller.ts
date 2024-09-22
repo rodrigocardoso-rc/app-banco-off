@@ -17,10 +17,25 @@ function ConversaController() {
         return DbModule.write<Conversa>(conversa, ESchemas.Conversa, UpdateMode.All)
     }
 
+    async function deleteChat(idChat: string) {
+        const query = `idConversa == "${idChat}"`
+        return DbModule.deleteItem(query, ESchemas.Conversa)
+    }
+
+    async function deleteChatAndMessages(idChat: string) {
+        const queryMessages = `idConversa == "${idChat}"`
+        await DbModule.deleteItem(queryMessages, ESchemas.Menssagem)
+
+        const query = `idConversa == "${idChat}"`
+        return DbModule.deleteItem(query, ESchemas.Conversa)
+    }
+
     return {
         getChatList,
         createChat,
         updateChat,
+        deleteChat,
+        deleteChatAndMessages
     }
 }
 

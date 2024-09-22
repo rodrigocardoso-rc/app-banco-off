@@ -24,7 +24,6 @@ function App(): React.JSX.Element {
   function getLoggedUser() {
     UsuarioController.getUserLogged()
       .then(res => setLoggedUser(res))
-      .catch(err => console.log(err));
   }
 
   return (
@@ -38,7 +37,7 @@ function App(): React.JSX.Element {
         <Navigator />
       </AuthContext.Provider>
 
-      <FlashMessage position={'top'} style={{ paddingTop: 28 }} />
+      <FlashMessage position={'top'} />
     </View>
   );
 }

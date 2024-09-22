@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -55,7 +55,6 @@ export default function FormChat() {
 
                 navigation.navigate(NameScreens.Home)
             })
-            .catch(err => console.log('Err', err))
             .finally(() => setIsLoading(false))
     }
 
@@ -79,7 +78,6 @@ export default function FormChat() {
                 });
                 navigation.goBack()
             })
-            .catch(err => console.log('Err', err))
             .finally(() => setIsLoading(false))
     }
 
@@ -96,6 +94,20 @@ export default function FormChat() {
                 const path = res.assets[0].uri || ''
                 setImage(path)
             });
+    }
+
+    function deleteChat() {
+        if (!chat) return
+
+        ConversaController.deleteChatAndMessages(chat.idConversa)
+            .then(() => {
+                showMessage({
+                    message: "Apagada com sucesso",
+                    type: "warning",
+                });
+                navigation.navigate(NameScreens.Home)
+            })
+            .finally(() => setIsLoading(false))
     }
 
     return (
@@ -124,11 +136,21 @@ export default function FormChat() {
                     stylesContainer={styles.inputContainer} />
             </View>
 
-            <Button
-                isLoading={isLoading}
-                text="Salvar"
-                onPress={onSubmit}
-                styles={styles.buttonContainer} />
+            <View>
+                <Button
+                    isLoading={isLoading}
+                    text="Salvar"
+                    onPress={onSubmit}
+                    styles={styles.buttonContainer} />
+
+                {chat && (
+                    <TouchableOpacity
+                        style={styles.deleteChatContainer}
+                        onPress={deleteChat}>
+                        <Text style={styles.deleteChatText}>Apagar conversa</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
         </ScrollView>
     )
 }

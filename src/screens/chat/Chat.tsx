@@ -41,7 +41,6 @@ export default function Chat() {
     function getMessageList() {
         MensagemController.getMessageByChat(chat.idConversa)
             .then((res) => setMessageList(res.reverse()))
-            .catch(err => console.log(err))
             .finally(() => setIsLoading(false))
     }
 
@@ -74,7 +73,6 @@ export default function Chat() {
                 setMessageList([newMessage, ...messageList])
                 setInputValue('')
             })
-            .catch(err => console.log(err))
             .finally(() => setIsLoading(false))
     }
 
