@@ -6,5 +6,4 @@ export default interface Conversa {
     descricao?: string,
     dataHoraCriacao: Date,
     imagemGrupo?: string,
-    listaUsuario: Usuario[],
 }

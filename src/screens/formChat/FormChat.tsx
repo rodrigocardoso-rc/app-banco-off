@@ -67,7 +67,6 @@ export default function FormChat() {
             descricao: description,
             dataHoraCriacao: new Date(),
             imagemGrupo: image,
-            listaUsuario: []
         }
 
         ConversaController.createChat(conversa)

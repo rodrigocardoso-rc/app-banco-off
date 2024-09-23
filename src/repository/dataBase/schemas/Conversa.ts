@@ -10,7 +10,6 @@ class Conversa extends Realm.Object {
             descricao: 'string?',
             dataHoraCriacao: 'date',
             imagemGrupo: 'string?',
-            listaUsuario: 'Usuario[]',
         },
     };
 }

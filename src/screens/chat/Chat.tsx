@@ -92,7 +92,6 @@ export default function Chat() {
 
     return (
         <View style={styles.container}>
-
             <FlatList
                 inverted
                 data={messageList}
@@ -104,9 +103,7 @@ export default function Chat() {
                 <MessageInput
                     value={inputValue}
                     placeholder={"Enviar mensagem..."}
-                    onChangeValue={(value) => setInputValue(value)}
-                    onSubmitEditing={onPressSend} />
-
+                    onChangeValue={(value) => setInputValue(value)} />
 
                 <TouchableOpacity
                     style={styles.containerSendImage}

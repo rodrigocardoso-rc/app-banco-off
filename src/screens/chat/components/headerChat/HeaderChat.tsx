@@ -21,7 +21,8 @@ export default function HeaderChat({ title, image, onPress }: HeaderChatProps) {
 
             <Avatar
                 imageSize={50}
-                source={image} />
+                source={image} 
+                onPress={onPress}/>
 
             <Text
                 style={styles.text}
