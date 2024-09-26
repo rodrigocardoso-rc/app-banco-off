@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -14,12 +14,15 @@ import { NameScreens, RootStackParamList } from "../../navigation/Navigator";
 import ConversaController from "../../repository/controllers/Conversa.controller";
 
 import styles from './FormChat.styles'
+import { CvsContext } from "../../../App";
 
 export default function FormChat() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     const route = useRoute<RouteProp<RootStackParamList, 'FormChat'>>()
     const chat = route.params?.data
+
+    const { createCv } = useContext(CvsContext);
 
     const [name, setName] = useState(chat?.nomeConversa || '')
     const [image, setImage] = useState(chat?.imagemGrupo || '')
@@ -69,6 +72,7 @@ export default function FormChat() {
             imagemGrupo: image,
         }
 
+        createCv(conversa)
         ConversaController.createChat(conversa)
             .then(() => {
                 showMessage({

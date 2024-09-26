@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NameScreens, RootStackParamList } from "../../navigation/Navigator";
 
-import { AuthContext } from "../../../App";
+import { AuthContext, CvsContext } from "../../../App";
 import Mensagem from "../../model/Mensagem";
 import { generateUUID } from "../../modules/uuid/Uuid";
 import Message from "./components/message/Message";
@@ -16,6 +16,7 @@ import styles from './Chat.styles'
 
 export default function Chat() {
     const { loggedUser } = useContext(AuthContext);
+    const { cvConnection, onUpdate } = useContext(CvsContext);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     const route = useRoute<RouteProp<RootStackParamList, 'Chat'>>()
@@ -26,6 +27,11 @@ export default function Chat() {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(getMessageList, [])
+
+    useEffect(() => {
+        if (cvConnection[chat.idConversa].hasToUpdate)
+            getMessageList()
+    }, [cvConnection])
 
     useEffect(() => {
         navigation.setOptions({
@@ -40,7 +46,10 @@ export default function Chat() {
 
     function getMessageList() {
         MensagemController.getMessageByChat(chat.idConversa)
-            .then((res) => setMessageList(res.reverse()))
+            .then((res) => {
+                setMessageList(res.reverse())
+                onUpdate(chat.idConversa)
+            })
             .finally(() => setIsLoading(false))
     }
 
@@ -68,12 +77,8 @@ export default function Chat() {
 
         setIsLoading(true)
 
-        MensagemController.sendMessage(newMessage)
-            .then(() => {
-                setMessageList([newMessage, ...messageList])
-                setInputValue('')
-            })
-            .finally(() => setIsLoading(false))
+        cvConnection[chat.idConversa].send(newMessage)
+        setInputValue('')
     }
 
     function onPressChatDetail() {
