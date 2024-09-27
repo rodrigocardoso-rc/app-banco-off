@@ -27,5 +27,10 @@ export default StyleSheet.create({
     deleteChatText: {
         fontSize: Dimensions.fontSize.medium,
         color: Colors.placeholder
+    }, containerCode: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    }, textCode: {
+        color: Colors.text
     }
 });

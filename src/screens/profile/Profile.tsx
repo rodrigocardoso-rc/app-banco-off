@@ -51,7 +51,6 @@ export default function Profile() {
                 });
                 await onUpdateUser()
                 navigation.navigate(NameScreens.Home)
-
             })
             .finally(() => setIsLoading(false))
     }
@@ -72,7 +71,6 @@ export default function Profile() {
                     type: "success",
                 });
                 await onUpdateUser()
-                navigation.navigate(NameScreens.Home)
             })
             .finally(() => setIsLoading(false))
     }

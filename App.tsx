@@ -50,7 +50,7 @@ function App(): React.JSX.Element {
   const [loggedUser, setLoggedUser] = useState<UsuarioAtual>();
   const [cvKeyValue, setCvKeyValue] = useState<CvsKeValue>({});
   const [hasToUpdateChatList, setHasToUpdateChatList] = useState(false)
-  const [ipAddress, setIpAddress] = useState('192.168.1.9:8080');
+  const [ipAddress, setIpAddress] = useState('192.168.6.242:8080');
 
   useEffect(() => {
     getLoggedUser();

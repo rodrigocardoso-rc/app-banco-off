@@ -77,6 +77,7 @@ export default function FormChat() {
             conversa.nomeConversa,
             conversa.descricao,
             conversa.dataHoraCriacao.getTime().toString())
+
         ConversaController.createChat(conversa)
             .then(() => {
                 showMessage({
@@ -142,6 +143,15 @@ export default function FormChat() {
                     onSubmitEditing={onSubmit}
                     stylesContainer={styles.inputContainer} />
             </View>
+
+            {chat?.idConversa && (
+                <View style={styles.containerCode}>
+                    <Text
+                        style={styles.deleteChatText}
+                        children={`Códgio do grupo: ${chat?.idConversa}`}
+                    />
+                </View>
+            )}
 
             <View>
                 <Button

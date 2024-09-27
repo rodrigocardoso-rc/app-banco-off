@@ -41,10 +41,6 @@ export default function SocketConnect(props: SocketConnectProps) {
         if (data.tipo === 'infoConversa') {
             const { idConversa, nome, descricao, dataHoraCriacao } = data
 
-
-
-            console.log(data.dataHoraCriacao)
-
             const cv: Conversa = {
                 idConversa: idConversa,
                 nomeConversa: decodeURIComponent(nome),
