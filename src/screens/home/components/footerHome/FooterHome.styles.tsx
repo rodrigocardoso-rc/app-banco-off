@@ -5,6 +5,9 @@ import { Dimensions } from "../../../../styles/Dimensions";
 
 export default StyleSheet.create({
     container: {
+        gap: 4
+    },
+    containerButton: {
         justifyContent: "center",
         alignItems: 'center',
         backgroundColor: Colors.border,

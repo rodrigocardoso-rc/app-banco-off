@@ -2,7 +2,11 @@ import Conversa from "../../model/Conversa";
 import Mensagem from "../../model/Mensagem";
 
 interface SocketConnectProps {
+    ipAddress: string;
     idConversa: string;
+    name?: string;
+    description?: string;
+    dataHoraCriacao?: string;
 
     onReceiveCvsInfo: (conversa: Conversa) => void;
     onReceiveMessage: (message: Mensagem) => void;
@@ -11,13 +15,21 @@ interface SocketConnectProps {
 
 export default function SocketConnect(props: SocketConnectProps) {
     const {
+        ipAddress,
         idConversa,
+        name,
+        description,
+        dataHoraCriacao,
 
         onReceiveCvsInfo,
         onReceiveMessage,
         onClose
     } = props;
-    const socket = new WebSocket(`ws://192.168.1.6:8080?idConversa=${idConversa}`);
+    const nameUrl = name ? `&nome=${encodeURIComponent(name)}` : ''
+    const descriptionUrl = description ? `&descricao=${encodeURIComponent(description)}` : ''
+    const dataHoraCriacaoUrl = dataHoraCriacao ? `&dataHoraCriacao=${encodeURIComponent(dataHoraCriacao)}` : ''
+
+    const socket = new WebSocket(`ws://${ipAddress}?idConversa=${idConversa}${nameUrl}${descriptionUrl}${dataHoraCriacaoUrl}`);
 
     socket.onopen = () => {
         console.log('Connected to WebSocket');
@@ -27,11 +39,20 @@ export default function SocketConnect(props: SocketConnectProps) {
         const data = JSON.parse(event.data);
 
         if (data.tipo === 'infoConversa') {
-            // Exibir informações da conversa
-            console.log('Nome da conversa:', data.nome);
-            console.log('Imagem da conversa:', data.imagem);
+            const { idConversa, nome, descricao, dataHoraCriacao } = data
 
-            onReceiveCvsInfo({ idConversa: idConversa, ...data })
+
+
+            console.log(data.dataHoraCriacao)
+
+            const cv: Conversa = {
+                idConversa: idConversa,
+                nomeConversa: decodeURIComponent(nome),
+                descricao: decodeURIComponent(descricao),
+                dataHoraCriacao: new Date(parseInt(decodeURIComponent(dataHoraCriacao)))
+            }
+
+            onReceiveCvsInfo(cv)
         } else {
             onReceiveMessage(data)
         }

@@ -72,7 +72,11 @@ export default function FormChat() {
             imagemGrupo: image,
         }
 
-        createCv(conversa)
+        createCv(
+            conversa.idConversa,
+            conversa.nomeConversa,
+            conversa.descricao,
+            conversa.dataHoraCriacao.getTime().toString())
         ConversaController.createChat(conversa)
             .then(() => {
                 showMessage({

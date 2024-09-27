@@ -1,15 +1,22 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import styles from './FooterHome.styles'
 
 interface FooterHomeProps {
-    onPress: () => void;
+    onPressNewChat: () => void;
+    onPressJoinChat: () => void;
 }
 
-export default function FooterHome({ onPress }: FooterHomeProps) {
+export default function FooterHome({ onPressNewChat, onPressJoinChat }: FooterHomeProps) {
 
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <Text style={styles.text}>Novo grupo</Text>
-        </TouchableOpacity>
+        <View style={styles.container}>
+            <TouchableOpacity style={styles.containerButton} onPress={onPressJoinChat}>
+                <Text style={styles.text}>Entrar em grupo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.containerButton} onPress={onPressNewChat}>
+                <Text style={styles.text}>Criar novo grupo</Text>
+            </TouchableOpacity>
+        </View>
     )
 }

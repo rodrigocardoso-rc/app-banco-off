@@ -3,7 +3,7 @@ import { FlatList, View } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { AuthContext } from "../../../App";
+import { AuthContext, CvsContext } from "../../../App";
 import Conversa from "../../model/Conversa";
 import CardChat from "./components/cardChat/CardChat";
 import FooterHome from "./components/footerHome/FooterHome";
@@ -15,15 +15,25 @@ import styles from './Home.styles'
 
 export default function Home() {
     const { loggedUser } = useContext(AuthContext);
+    const { hasToUpdateChatList, onUpdateChatList } = useContext(CvsContext);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     const [chatList, setChatList] = useState<Conversa[]>([])
 
     useFocusEffect(useCallback(getChatList, []))
 
+    useFocusEffect(useCallback(() => {
+        if (hasToUpdateChatList)
+            getChatList()
+
+    }, [hasToUpdateChatList]))
+
     function getChatList() {
         ConversaController.getChatList()
-            .then((res) => setChatList([...res]))
+            .then((res) => {
+                setChatList([...res])
+                onUpdateChatList()
+            })
     }
 
     function onPressProfile() {
@@ -32,6 +42,10 @@ export default function Home() {
 
     function onPressNewChat() {
         navigation.navigate(NameScreens.FormChat)
+    }
+
+    function onJoinChat() {
+        navigation.navigate(NameScreens.JoinChat)
     }
 
     function onPressChat(data: Conversa) {
@@ -59,7 +73,9 @@ export default function Home() {
                 renderItem={renderItem}
                 contentContainerStyle={styles.listContainer} />
 
-            <FooterHome onPress={onPressNewChat} />
+            <FooterHome
+                onPressNewChat={onPressNewChat}
+                onPressJoinChat={onJoinChat} />
         </View>
     )
 }

@@ -9,6 +9,7 @@ import Chat from "../screens/chat/Chat";
 import Profile from "../screens/profile/Profile";
 import FormChat from "../screens/formChat/FormChat";
 import HeaderChat from "../screens/chat/components/headerChat/HeaderChat";
+import CodeChat from "../screens/codeChat/CodeChat";
 
 export type RootStackParamList = {
     Home: undefined,
@@ -16,6 +17,7 @@ export type RootStackParamList = {
     StartLogin: {},
     Chat: { data: Conversa };
     FormChat: { data?: Conversa } | undefined;
+    JoinChat: undefined
 };
 
 export enum NameScreens {
@@ -23,7 +25,8 @@ export enum NameScreens {
     Profile = 'Profile',
     StartLogin = 'StartLogin',
     Chat = 'Chat',
-    FormChat = 'FormChat'
+    FormChat = 'FormChat',
+    JoinChat = 'JoinChat'
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -47,6 +50,11 @@ export default function Navigator() {
                 name={NameScreens.FormChat}
                 options={{ title: "Conversa" }}
                 component={FormChat} />
+
+            <Stack.Screen
+                name={NameScreens.JoinChat}
+                options={{ title: "Conversa" }}
+                component={CodeChat} />
 
             <Stack.Screen
                 name={NameScreens.Chat}

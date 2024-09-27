@@ -10,7 +10,7 @@ function ConversaController() {
     }
 
     function createChat(conversa: Conversa) {
-        return DbModule.write<Conversa>(conversa, ESchemas.Conversa)
+        return DbModule.write<Conversa>(conversa, ESchemas.Conversa, UpdateMode.All)
     }
 
     function updateChat(conversa: Conversa) {

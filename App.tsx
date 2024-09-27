@@ -28,8 +28,10 @@ interface IAuthContext {
 
 interface ICvsContext {
   cvConnection: CvsKeValue;
+  hasToUpdateChatList: boolean;
   onUpdate: (idCv: string) => void;
-  createCv: (cv: Conversa) => void;
+  onUpdateChatList: () => void;
+  createCv: (idCv: string, name?: string, description?: string, dataHoraCriacao?: string) => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -38,6 +40,8 @@ export const AuthContext = createContext<IAuthContext>({
 
 export const CvsContext = createContext<ICvsContext>({
   cvConnection: {},
+  hasToUpdateChatList: false,
+  onUpdateChatList: () => { },
   onUpdate: () => { },
   createCv: () => { }
 });
@@ -45,6 +49,8 @@ export const CvsContext = createContext<ICvsContext>({
 function App(): React.JSX.Element {
   const [loggedUser, setLoggedUser] = useState<UsuarioAtual>();
   const [cvKeyValue, setCvKeyValue] = useState<CvsKeValue>({});
+  const [hasToUpdateChatList, setHasToUpdateChatList] = useState(false)
+  const [ipAddress, setIpAddress] = useState('192.168.1.9:8080');
 
   useEffect(() => {
     getLoggedUser();
@@ -66,6 +72,7 @@ function App(): React.JSX.Element {
             hasToUpdate: true,
             send: SocketConnect({
               idConversa: item.idConversa,
+              ipAddress: ipAddress,
               onReceiveCvsInfo: onReceiveCvsInfo,
               onReceiveMessage: onReceiveMessage
             })
@@ -77,7 +84,11 @@ function App(): React.JSX.Element {
   }
 
   function onReceiveCvsInfo(cv: Conversa) {
-    createCv(cv)
+    console.log('onReceiveCvsInfo')
+    ConversaController.createChat(cv)
+      .then(() => {
+        setHasToUpdateChatList(true)
+      })
   }
 
   async function onReceiveMessage(message: Mensagem) {
@@ -85,15 +96,20 @@ function App(): React.JSX.Element {
 
     setCvKeyValue((value) => {
       value[message.idConversa].hasToUpdate = true
-      return {...value}
+      return { ...value }
     })
   }
 
-  function createCv(cv: Conversa) {
-    cvKeyValue[cv.idConversa] = {
+  function createCv(idCv: string, name?: string, description?: string, dataHoraCriacao?: string) {
+    cvKeyValue[idCv] = {
       hasToUpdate: false,
       send: SocketConnect({
-        idConversa: cv.idConversa,
+        idConversa: idCv,
+        ipAddress: ipAddress,
+        name: name,
+        description: description,
+        dataHoraCriacao: dataHoraCriacao,
+
         onReceiveCvsInfo: onReceiveCvsInfo,
         onReceiveMessage: onReceiveMessage
       })
@@ -107,6 +123,10 @@ function App(): React.JSX.Element {
     setCvKeyValue(cvKeyValue)
   }
 
+  function onUpdateChatList() {
+    setHasToUpdateChatList(false)
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar
@@ -114,7 +134,13 @@ function App(): React.JSX.Element {
         backgroundColor={Colors.screenBackground}
       />
 
-      <CvsContext.Provider value={{ onUpdate, cvConnection: cvKeyValue, createCv }}>
+      <CvsContext.Provider value={{
+        onUpdate,
+        createCv,
+        onUpdateChatList,
+        hasToUpdateChatList,
+        cvConnection: cvKeyValue,
+      }}>
         <AuthContext.Provider value={{ loggedUser, onUpdateUser: getLoggedUser }}>
           <Navigator />
         </AuthContext.Provider>
